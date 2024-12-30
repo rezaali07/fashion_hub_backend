@@ -19,17 +19,7 @@ exports.isAuthenticatedUser = catchAsyncErrors(async (req, res, next) => {
   next();
 });
 
-// admin roles here
-exports.authorizedRoles = (...roles) => {
-  return (req, res, next) => {
-    if (!roles.includes(req.user.role)) {
-      return next(
-        new ErrorHandler(`${req.user.role} are not authorized to perform this action`, 403)
-      );
-    };
-    next();
-  }
-}
+
 
 exports.auth = async (req, res, next) => {
   // check header
