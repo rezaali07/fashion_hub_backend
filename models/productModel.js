@@ -3,9 +3,9 @@ const { stringify } = require("nodemon/lib/utils");
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please enter name of your product"],
+    required: [true, "Please enter the name of product"],
     trim: true,
-    // maxlength: [20, "Product name cannot exceed 20 characters"],
+    // maxlength: [20, "Product Name cannot exceed 20 characters"],
   },
   description: {
     type: String,
@@ -14,8 +14,8 @@ const productSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: [true, "Add price of product"],
-    maxlength: [8, "price cant exceed 8 characters"],
+    required: [true, "Add price of the product"],
+    maxlength: [8, "price can't exceed 8 characters"],
   },
   offerPrice: {
     type: String,
@@ -49,7 +49,7 @@ const productSchema = new mongoose.Schema({
   },
   stock: {
     type: Number,
-    required: [true, "Plz add some stock for product"],
+    required: [true, "Please add product"],
     maxlength: [3, "Stock  can't be more than 3"],
   },
   NoOfReviews: {
