@@ -5,7 +5,7 @@ const Features = require("../utils/Features.js");
 const cloudinary = require("cloudinary");
 
 // create Product --admin
-exports.createProduct = catchAsyncErrors(async(req, res, next) => {
+exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     let images = [];
 
     if (typeof req.body.images === "string") {
@@ -38,7 +38,7 @@ exports.createProduct = catchAsyncErrors(async(req, res, next) => {
 });
 
 // get all products
-exports.getAllProducts = catchAsyncErrors(async(req, res) => {
+exports.getAllProducts = catchAsyncErrors(async (req, res) => {
     const resultPerPage = 8;
     const productsCount = await Product.countDocuments();
 
@@ -58,7 +58,7 @@ exports.getAllProducts = catchAsyncErrors(async(req, res) => {
 });
 
 //update product --admin
-exports.updateProduct = catchAsyncErrors(async(req, res, next) => {
+exports.updateProduct = catchAsyncErrors(async (req, res, next) => {
     let product = await Product.findById(req.params.id);
     if (!product) {
         return next(new ErrorHandler("Product of this id not found", 404));
@@ -104,7 +104,7 @@ exports.updateProduct = catchAsyncErrors(async(req, res, next) => {
 });
 
 //delete product --admin
-exports.deleteProduct = catchAsyncErrors(async(req, res, next) => {
+exports.deleteProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if (!product) {
         return next(new ErrorHandler("Product of this id not found", 404));
@@ -122,7 +122,7 @@ exports.deleteProduct = catchAsyncErrors(async(req, res, next) => {
 });
 
 //single product details --admin
-exports.getSingleProduct = catchAsyncErrors(async(req, res, next) => {
+exports.getSingleProduct = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if (!product) {
         return next(new ErrorHandler("Product of this id not found", 404));
@@ -134,7 +134,7 @@ exports.getSingleProduct = catchAsyncErrors(async(req, res, next) => {
 });
 
 // create and update review
-exports.createProductReview = catchAsyncErrors(async(req, res, next) => {
+exports.createProductReview = catchAsyncErrors(async (req, res, next) => {
     console.log(req.body);
     const { rating, comment, productId } = req.body;
 
@@ -177,7 +177,7 @@ exports.createProductReview = catchAsyncErrors(async(req, res, next) => {
 });
 
 // get all reviews of single product
-exports.getSingleProductReviews = catchAsyncErrors(async(req, res, next) => {
+exports.getSingleProductReviews = catchAsyncErrors(async (req, res, next) => {
     const product = await Product.findById(req.query.id);
     if (!product) {
         return next(new ErrorHandler("Product of this id not found", 404));
@@ -186,5 +186,25 @@ exports.getSingleProductReviews = catchAsyncErrors(async(req, res, next) => {
         success: true,
         reviews: product.reviews,
     });
+
+    // delete review -- admin
+    exports.deleteProductReview = catchAsyncErrors(async (req, res, next) => {
+        const product = await Product.findById(req.query.productId);
+        if (!product) {
+            return next(new ErrorHandler("Product of this id not found", 404));
+        }
+
+        const reviews = product.reviews.filter(
+            (rev) => rev._id.toString() !== req.query.id.toString()
+        );
+
+        let avg = 0;
+
+
+        res.status(200).json({
+            success: true,
+        });
+    });
+
 });
 
