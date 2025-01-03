@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter name of your product"],
     trim: true,
-    // maxlength: [20, "Procustname cannot exceed 20 characters"],
+    // maxlength: [20, "Product name cannot exceed 20 characters"],
   },
   description: {
     type: String,
@@ -56,7 +56,38 @@ const productSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  
+  reviews: [
+    {
+      user: {
+        type: mongoose.Schema.ObjectId,
+        ref: "User",
+        required: "true",
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      rating: {
+        type: Number,
+        required: true,
+      },
+      comment: {
+        type: String,
+      },
+      time: {
+        type: Date,
+        default: Date.now(),
+      },
+    },
+  ],
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: "User",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 });
 
 module.exports = mongoose.model("Product", productSchema);
