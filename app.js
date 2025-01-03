@@ -22,9 +22,10 @@ dotenv.config({
 // import route
 
 const user = require("./routes/UserRoute");
-
+const product = require("./routes/ProductRoute");
 
 app.use("/api/v2", user);
+app.use("/api/v2", product);
 
 
 // error handler
