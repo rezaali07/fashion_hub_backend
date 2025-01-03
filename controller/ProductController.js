@@ -186,25 +186,47 @@ exports.getSingleProductReviews = catchAsyncErrors(async (req, res, next) => {
         success: true,
         reviews: product.reviews,
     });
-
-    // delete review -- admin
-    exports.deleteProductReview = catchAsyncErrors(async (req, res, next) => {
-        const product = await Product.findById(req.query.productId);
-        if (!product) {
-            return next(new ErrorHandler("Product of this id not found", 404));
-        }
-
-        const reviews = product.reviews.filter(
-            (rev) => rev._id.toString() !== req.query.id.toString()
-        );
-
-        let avg = 0;
-
-
-        res.status(200).json({
-            success: true,
-        });
-    });
-
 });
 
+// delete review -- admin
+exports.deleteProductReview = catchAsyncErrors(async (req, res, next) => {
+    const product = await Product.findById(req.query.productId);
+    if (!product) {
+        return next(new ErrorHandler("Product of this id not found", 404));
+    }
+
+    const reviews = product.reviews.filter(
+        (rev) => rev._id.toString() !== req.query.id.toString()
+    );
+
+    let avg = 0;
+
+    reviews.forEach((rev) => {
+        avg += rev.rating;
+    });
+
+    let ratings = 0;
+
+    if (reviews.length === 0) {
+        ratings = 0;
+    } else {
+        ratings = avg / reviews.length;
+    }
+
+    const NoOfReviews = reviews.length;
+    await Product.findByIdAndUpdate(
+        req.query.productId, {
+        reviews,
+        ratings,
+        NoOfReviews,
+    }, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false,
+    }
+    );
+
+    res.status(200).json({
+        success: true,
+    });
+});
