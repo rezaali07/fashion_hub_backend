@@ -18,6 +18,13 @@ router
   .route("/admin/products")
   .get(isAuthenticatedUser, authorizedRoles("admin"), getAllProducts);
 
+router
+  .route("/product/new")
+  .post(isAuthenticatedUser, authorizedRoles("admin"), createProduct);
+
+router
+  .route("/product/:id")
+  .put(isAuthenticatedUser, authorizedRoles("admin"), updateProduct);
 
 router
   .route("/product/:id")
@@ -25,9 +32,9 @@ router
   .get(getSingleProduct);
 
 
-// review route
+// router
 router.route("/create/product/review").put(auth, createProductReview);
-router.route("/product/reviews").put(isAuthenticatedUser, createProductReview); 
+router.route("/product/reviews").put(isAuthenticatedUser, createProductReview);
 
 router
   .route("/reviews")
