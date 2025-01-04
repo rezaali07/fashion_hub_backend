@@ -31,8 +31,10 @@ router
   .delete(isAuthenticatedUser, authorizedRoles("admin"), deleteProduct)
   .get(getSingleProduct);
 
-router.route("/create/product/review").put(auth, createProductReview); // f
-router.route("/product/reviews").put(isAuthenticatedUser, createProductReview); // r
+
+// review route
+router.route("/create/product/review").put(auth, createProductReview);
+router.route("/product/reviews").put(isAuthenticatedUser, createProductReview); 
 
 router
   .route("/reviews")
