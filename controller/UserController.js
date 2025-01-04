@@ -145,6 +145,14 @@ exports.resetPassword = catchAsyncErrors(async (req, res, next) => {
 });
 
 // Get user details
+exports.userDetails = catchAsyncErrors(async (req, res, next) => {
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+        success: true,
+        user,
+    });
+});
 
 // Update user password
 exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
