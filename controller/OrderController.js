@@ -142,5 +142,26 @@ exports.updateOrderAdmin = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+async function updateStock(id, quantity) {
+  const product = await Product.findById(id);
 
+  product.stock -= quantity;
+
+  await product.save({ validateBeforeSave: false });
+}
+
+// delete order
+exports.deleteOrderAdmin = catchAsyncErrors(async (req, res, next) => {
+  const order = await Order.findById(req.params.id);
+
+if (!order) {
+  return next(new ErrorHandler("Order did not find with this id", 404));
+}
+
+await order.remove();
+
+res.status(200).json({
+  success: true,
+});
+}); 
 
