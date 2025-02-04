@@ -25,5 +25,10 @@ router
   .route("/admin/order/:id")
   .delete(isAuthenticatedUser, authorizedRoles("admin"), deleteOrderAdmin);
 
+// ==========================================================------
+router.route("/order/flutter/create").post(createOrderHistory);
+router.route("/order/flutter/:id").get(getOrderHistory);
+module.exports = router;
+// ======================================-------------------------
 
 
