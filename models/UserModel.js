@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Enter your name"],
     maxlength: [50, "Name can't be more than 50 characters"],
-    minlength: [3, "Name can't be less than 3 characters"],
+    minlength: [3, "Name can't be less than 2 characters"],
   },
   email: {
     type: String,
@@ -19,9 +19,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Please enter a password"],
+    required: [true, "Please enter password"],
     minlength: [8, "Password must be at least 8 characters"],
-    select: false, // Prevents the password from being returned in queries by default
+    select: false,
   },
   avatar: {
     public_id: {
@@ -42,46 +42,45 @@ const userSchema = new mongoose.Schema({
     default: Date.now(),
   },
   resetPasswordToken: String,
-  resetPasswordDate: Date, // Renamed for consistency
+  resetPasswordDate: Date,
 });
 
-// Hash the password before saving
+// hash the password before saving
 userSchema.pre("save", async function (next) {
-  // Only hash the password if it's new or being updated
   if (!this.isModified("password")) {
-    return next();
+    next();
   }
   this.password = await bcrypt.hash(this.password, 10);
-  next();
 });
 
-// Generate JWT for authentication
+// generate a token for each user that is jwt token
 userSchema.methods.getJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
   });
 };
 
-// Compare the provided password with the hashed password in the database
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
+// compare the password with the hashed password
+userSchema.methods.comparePassword = async function (enteredpassword) {
+  return await bcrypt.compare(enteredpassword, this.password);
 };
 
-// Generate a reset password token
+// forget password
 userSchema.methods.getResetToken = function () {
-  // Generate a reset token
+  // generate a token
   const resetToken = crypto.randomBytes(20).toString("hex");
 
-  // Hash the token and set it to the `resetPasswordToken` field
+  // hash the token and resetPassword token to userSchema
   this.resetPasswordToken = crypto
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
 
-  // Set the token's expiration time
-  this.resetPasswordDate = Date.now() + 10 * 60 * 1000; // 10 minutes
+  // set the expire date
+  this.resetPasswordTime = Date.now() + 10 * 60 * 1000;
 
-  return resetToken; // Return the unhashed token to the user
+  // return the token
+  return resetToken;
 };
 
 module.exports = mongoose.model("User", userSchema);

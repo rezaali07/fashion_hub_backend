@@ -3,7 +3,7 @@ const {
   createOrder,
   getSingleOrder,
   getAllOrders,
-  getAllOrdersAdmin,
+  getAllOrdersAdmin, 
   updateOrderAdmin,
   deleteOrderAdmin,
   createOrderHistory,

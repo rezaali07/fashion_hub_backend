@@ -12,6 +12,7 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
         const { name, email, password } = req.body;
         console.log(req.body);
 
+        // Avatar handling
         let avatar = {
             public_id: "samples/man-portrait",
             url: "https://res.cloudinary.com/dig1ixe4q/image/upload/v1732525014/samples/man-portrait.jpg",
@@ -93,7 +94,7 @@ exports.forgetPassword = catchAsyncErrors(async (req, res, next) => {
 
     const resetPasswordUrl = `http://localhost:3000/password/reset/${resetToken}`;
 
-    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: \n\n ${resetPasswordUrl}`;
+    const message = `Forgot your password? Click the link below : \n\n ${resetPasswordUrl}`;
 
     try {
         await sendEmail({
