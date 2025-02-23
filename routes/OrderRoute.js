@@ -19,9 +19,9 @@ router
   .route("/admin/orders")
   .get(isAuthenticatedUser, authorizedRoles("admin"), getAllOrdersAdmin);
 router
-  .route("/admin/order/:id")
+  .route("/admin/order/:id") 
   .put(isAuthenticatedUser, authorizedRoles("admin"), updateOrderAdmin);
-router
+router 
   .route("/admin/order/:id")
   .delete(isAuthenticatedUser, authorizedRoles("admin"), deleteOrderAdmin);
 
