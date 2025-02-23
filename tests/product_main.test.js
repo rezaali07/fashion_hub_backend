@@ -60,7 +60,18 @@ describe("Product API", () => {
       });
   });
 
- 
+  // Test: Create a product and get it by ID
+  it("should create and get a single product by ID", (done) => {
+    const productData = {
+      name: "Test Product",
+      description: "Test Product Description",
+      price: 50,
+      category: "Casual wear",
+      stock: 100,
+      offerPrice: 40,
+      images: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wIAAgMBApIdl4UAAAAASUVORK5CYII="  // Demo base64 image
+    };
+
     // Create product
     chai
       .request(app)
