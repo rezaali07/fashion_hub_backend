@@ -101,7 +101,33 @@ describe("Product API", () => {
       });
   });
 
+  // Test: Should fail if non-admin tries to create a product
+  it("should fail if a non-admin user tries to create a product", (done) => {
+    const productData = {
+      name: "Test Product",
+      description: "Test Product Description",
+      price: 50,
+      category: "Casual wear",
+      stock: 100,
+      offerPrice: 40,
+      images: "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/wIAAgMBApIdl4UAAAAASUVORK5CYII="  // Demo base64 image
+    };
 
+    chai
+      .request(app)
+      .post("/api/v2/product/new")
+      .set("Authorization", `Bearer ${nonAdminToken}`)
+      .set("Cookie", `token=${nonAdminToken}`)
+      .send(productData)
+      .end((err, res) => {
+        if (err) console.error("Non-admin Create Product Error:", err);
+        res.should.have.status(403);  // Expecting a 403 Forbidden error for non-admin users
+        res.body.should.have.property("message").eql("user are not authorized to perform this action");
+        done();
+      });
+  });
+
+  
   // Test: Should not allow non-admin user to delete a product
   it("should not allow a non-admin user to delete a product", (done) => {
     chai
