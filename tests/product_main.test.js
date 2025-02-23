@@ -127,7 +127,21 @@ describe("Product API", () => {
       });
   });
 
-  
+  // Test: Should delete a product if admin
+  it("should delete a product if admin", (done) => {
+    chai
+      .request(app)
+      .delete(`/api/v2/product/${productId}`)
+      .set("Authorization", `Bearer ${adminToken}`)
+      .set("Cookie", `token=${adminToken}`)
+      .end((err, res) => {
+        if (err) console.error("Admin Delete Product Error:", err);
+        res.should.have.status(200);
+        res.body.should.have.property("message").eql("Product is deleted successfully");
+        done();
+      });
+  });
+
   // Test: Should not allow non-admin user to delete a product
   it("should not allow a non-admin user to delete a product", (done) => {
     chai
