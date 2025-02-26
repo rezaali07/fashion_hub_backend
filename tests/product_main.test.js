@@ -31,8 +31,8 @@ describe("Product API", () => {
       .request(app)
       .post("/api/v2/login")
       .send({
-        email: "admin_test@gmail.com",  // Use your admin email here
-        password: "123456@abc"
+        email: "testadmin@gmail.com",  // Use your admin email here
+        password: "123456789"
       })
       .end((err, res) => {
         if (err) console.error("Admin login error:", err);
@@ -46,8 +46,8 @@ describe("Product API", () => {
           .request(app)
           .post("/api/v2/login")
           .send({
-            email: "user_1740215518895@example.com",  // Use a non-admin email here
-            password: "123456@abc"
+            email: "testuser1@gmail.com",  // Use a non-admin email here
+            password: "123456789"
           })
           .end((err, res) => {
             if (err) console.error("Non-admin login error:", err);

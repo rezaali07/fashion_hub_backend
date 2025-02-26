@@ -24,7 +24,7 @@ describe("User Authentication API", () => {
       .send({
         name: "Test User",
         email: testEmail,
-        password: "123456@abc",
+        password: "123456789",
       })
       .end((err, res) => {
         expect(res).to.have.status(201);
@@ -38,7 +38,7 @@ describe("User Authentication API", () => {
       .post("/api/v2/login")
       .send({
         email: testEmail,
-        password: "123456@abc",
+        password: "123456789",
       })
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -86,8 +86,8 @@ describe("User Authentication API", () => {
     agent
       .post("/api/v2/login")
       .send({
-        email: "admin_test@gmail.com", // Ensure this admin exists
-        password: "123456@abc",
+        email: "testadmin@gmail.com", // Ensure this admin exists
+        password: "123456789",
       })
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -140,3 +140,61 @@ describe("User Authentication API", () => {
 });
 
 
+
+
+
+// const chai = require("chai");
+// const chaiHttp = require("chai-http");
+// const server = require("../../server"); // Ensure correct path to your server
+// const { expect } = chai;
+
+// chai.use(chaiHttp);
+
+// const agent = chai.request.agent(server); // Use agent to persist cookies
+
+// // Function to generate a unique email for each test run
+// const generateRandomEmail = () => {
+//   return `user_${Date.now()}@gmail.com`;
+// };
+
+// describe("User Authentication API", () => {
+//   let testEmail = generateRandomEmail();
+
+//   it("User Registration", (done) => {
+//     agent
+//       .post("/api/v2/register")
+//       .send({
+//         name: "Test User",
+//         email: testEmail, // Use the dynamically generated email
+//         password: "123456@abc",
+//       })
+//       .end((err, res) => {
+//         expect(res).to.have.status(201); // Updated from 200 to 201
+//         done();
+//       });
+//   });
+
+//   it("User Login", (done) => {
+//     agent
+//       .post("/api/v2/login")
+//       .send({
+//         email: testEmail, // Use the same email registered
+//         password: "123456@abc",
+//       })
+//       .end((err, res) => {
+//         expect(res).to.have.status(200);
+//         expect(res).to.have.cookie("token"); // Ensure token cookie is set
+//         done();
+//       });
+//   });
+
+//   it("User Logout", (done) => {
+//     agent
+//       .get("/api/v2/logout") // Ensure this matches your backend logout route
+//       .end((err, res) => {
+//         expect(res).to.have.status(200);
+//         expect(res).to.not.have.cookie("token"); // Ensure token cookie is removed
+//         done();
+//       });
+//   });
+// });
